@@ -1,0 +1,100 @@
+class HomeLibrary:
+    def __init__(self):
+        self.books = {}
+    def add_book(self):
+        try:
+            number = int(input("Введіть номер книги: "))
+            if number in self.books:
+                print("Книга з таким номером вже існує!")
+                return
+            author = input("Автор: ")
+            title = input("Назва: ")
+            publisher = input("Видавництво: ")
+            genre = input("Жанр: ")
+            year = int(input("Рік видання: "))
+            self.books[number] = {
+                "author": author,
+                "title": title,
+                "publisher": publisher,
+                "genre": genre,
+                "year": year
+            }
+            print("Книгу додано")
+        except ValueError:
+            print("Помилка вводу!")
+    def remove_book(self):
+        try:
+            number = int(input("Введіть номер книги для видалення: "))
+            if number in self.books:
+                del self.books[number]
+                print("Книгу видалено")
+            else:
+                print("Книга не знайдена")
+        except ValueError:
+            print("Помилка вводу!")
+    def get_book(self):
+        try:
+            number = int(input("Введіть номер книги: "))
+            book = self.books.get(number)
+            if book:
+                print(f"{number}: {book}")
+            else:
+                print("Книга не знайдена")
+        except ValueError:
+            print("Помилка вводу!")
+    def search(self):
+        print("Пошук за параметром:")
+        print("author / title / publisher / genre / year")
+        key = input("Введіть поле: ").lower()
+        value = input("Введіть значення: ")
+        if key == "year":
+            try:
+                value = int(value)
+            except ValueError:
+                print("Рік має бути числом!")
+                return
+        results = []
+        for num, book in self.books.items():
+            if book.get(key) == value:
+                results.append((num, book))
+        if results:
+            print("Знайдено:")
+            for num, book in results:
+                print(f"{num}: {book}")
+        else:
+            print("Нічого не знайдено")
+    def show_all(self):
+        if not self.books:
+            print("Бібліотека порожня")
+        else:
+            print("Всі книги:")
+            for num, book in self.books.items():
+                print(f"{num}: {book}")
+def main():
+    library = HomeLibrary()
+    while True:
+        print("\nМеню:")
+        print("1. Додати книгу")
+        print("2. Видалити книгу")
+        print("3. Показати всі книги")
+        print("4. Пошук книги")
+        print("5. Отримати книгу за номером")
+        print("0. Вихід")
+        choice = input("Ваш вибір: ")
+        if choice == "1":
+            library.add_book()
+        elif choice == "2":
+            library.remove_book()
+        elif choice == "3":
+            library.show_all()
+        elif choice == "4":
+            library.search()
+        elif choice == "5":
+            library.get_book()
+        elif choice == "0":
+            print("Програма завершена")
+            break
+        else:
+            print("Невірний вибір!")
+if __name__ == "__main__":
+    main()
